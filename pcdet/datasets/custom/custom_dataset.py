@@ -160,6 +160,8 @@ class CustomDataset(DatasetTemplate):
         sample_id_list = sample_id_list if sample_id_list is not None else self.sample_id_list
 
         # create a thread pool to improve the velocity
+        if sample_id_list is None or not sample_id_list:
+            raise ValueError("The sample ID list is empty or not initialized.")
         with futures.ThreadPoolExecutor(num_workers) as executor:
             infos = executor.map(process_single_scene, sample_id_list)
         return list(infos)
