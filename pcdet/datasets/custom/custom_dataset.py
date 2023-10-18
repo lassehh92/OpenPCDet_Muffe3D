@@ -27,6 +27,9 @@ class CustomDataset(DatasetTemplate):
         split_dir = os.path.join(self.root_path, 'ImageSets', (self.split + '.txt'))
         self.sample_id_list = [x.strip() for x in open(split_dir).readlines()] if os.path.exists(split_dir) else None
 
+        # Print the sample ID list
+        print("Sample ID List:", self.sample_id_list)
+
         self.custom_infos = []
         self.include_data(self.mode)
         self.map_class_to_kitti = self.dataset_cfg.MAP_CLASS_TO_KITTI
