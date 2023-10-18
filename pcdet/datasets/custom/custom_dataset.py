@@ -23,22 +23,13 @@ class CustomDataset(DatasetTemplate):
             dataset_cfg=dataset_cfg, class_names=class_names, training=training, root_path=root_path, logger=logger
         )
         self.split = self.dataset_cfg.DATA_SPLIT[self.mode]
+
         split_dir = os.path.join(self.root_path, 'ImageSets', (self.split + '.txt'))
-
-        # Check and print the path
-        print(f"Looking for file at: {split_dir}")
-
-        if os.path.exists(split_dir):
-            self.sample_id_list = [x.strip() for x in open(split_dir).readlines()]
-            print("Sample ID List:", self.sample_id_list)
-        else:
-            print(f"File {split_dir} does not exist!")
-            self.sample_id_list = []
+        self.sample_id_list = [x.strip() for x in open(split_dir).readlines()] if os.path.exists(split_dir) else None
 
         self.custom_infos = []
         self.include_data(self.mode)
         self.map_class_to_kitti = self.dataset_cfg.MAP_CLASS_TO_KITTI
-
 
     def include_data(self, mode):
         self.logger.info('Loading Custom dataset.')
@@ -168,17 +159,10 @@ class CustomDataset(DatasetTemplate):
 
         sample_id_list = sample_id_list if sample_id_list is not None else self.sample_id_list
 
-        # Check if the sample_id_list is empty or None and print a warning if it is
-        if not sample_id_list:
-            print("Sample ID list is empty!")
-            return []
-
-        # If the sample_id_list is not empty, proceed with the thread pool
+        # create a thread pool to improve the velocity
         with futures.ThreadPoolExecutor(num_workers) as executor:
             infos = executor.map(process_single_scene, sample_id_list)
-
         return list(infos)
-    
 
     def create_groundtruth_database(self, info_path=None, used_classes=None, split='train'):
         import torch
