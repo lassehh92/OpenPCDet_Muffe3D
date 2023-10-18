@@ -5,12 +5,12 @@ POINT_CLOUD_RANGE: [-15.2, -15.2, -2, 15.2, 15.2, 4]
 
 CLASS_NAMES: ['Anboring', 'Bøjning', 'EnkelSamling', 'Stophane']  
 
-# MAP_CLASS_TO_KITTI: {
-#     'Anboring': 'Car',
-#     'Bøjning': 'Pedestrian',
-#     'EnkelSamling': 'Pedestrian',
-#     'Stophane': 'Cyclist',
-# }
+MAP_CLASS_TO_KITTI: {
+    'Anboring': 'Car',
+    #'Bøjning': 'Pedestrian',
+    'EnkelSamling': 'Pedestrian',
+    'Stophane': 'Cyclist',
+}
 
 'anchor_sizes': [[0.15, 0.15, 0.15, 0.15]]
 
