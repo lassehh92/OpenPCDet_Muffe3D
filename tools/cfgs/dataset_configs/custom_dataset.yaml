@@ -3,16 +3,15 @@ DATA_PATH: '../data/custom'
 
 POINT_CLOUD_RANGE: [-15.2, -15.2, -2, 15.2, 15.2, 4]
 
-CLASS_NAMES: ['Anboring', 'Bøjning', 'EnkelSamling', 'Stophane']  
+CLASS_NAMES: ['Anboring', 'EnkelSamling', 'Stophane']  
 
 MAP_CLASS_TO_KITTI: {
     'Anboring': 'Car',
-    #'Bøjning': 'Pedestrian',
     'EnkelSamling': 'Pedestrian',
     'Stophane': 'Cyclist',
 }
 
-'anchor_sizes': [[0.15, 0.15, 0.15, 0.15]]
+'anchor_sizes': [[0.15, 0.15, 0.15]]
 
 DATA_SPLIT: {
     'train': train,
@@ -38,11 +37,11 @@ DATA_AUGMENTOR:
           DB_INFO_PATH:
               - custom_dbinfos_train.pkl
           PREPARE: {
-             filter_by_min_points: ['Anboring:5', 'Bøjning:5', 'EnkelSamling:5', 'Stophane:5'],
+             filter_by_min_points: ['Anboring:5', 'EnkelSamling:5', 'Stophane:5'],
              filter_by_difficulty: [-1],
           }
 
-          SAMPLE_GROUPS: ['Anboring:20', 'Bøjning:15', 'EnkelSamling:15', 'Stophane:15']
+          SAMPLE_GROUPS: ['Anboring:20', 'EnkelSamling:15', 'Stophane:15']
           NUM_POINT_FEATURES: 3
           DATABASE_WITH_FAKELIDAR: False
           REMOVE_EXTRA_WIDTH: [0.0, 0.0, 0.0]
