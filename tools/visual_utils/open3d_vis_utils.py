@@ -57,6 +57,12 @@ def draw_scenes(points, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scor
     pts = open3d.geometry.PointCloud()
     pts.points = open3d.utility.Vector3dVector(points[:, :3])
 
+    if point_colors is not None:
+        pts.colors = open3d.utility.Vector3dVector(point_colors / 255.0)  # Assuming RGB values are in [0, 255]
+    else:
+        pts.colors = open3d.utility.Vector3dVector(np.ones((points.shape[0], 3)))
+
+
     vis.add_geometry(pts)
     if point_colors is None:
         pts.colors = open3d.utility.Vector3dVector(np.ones((points.shape[0], 3)))

@@ -47,17 +47,21 @@ class DemoDataset(DatasetTemplate):
         if self.ext == '.bin':
             points = np.fromfile(self.sample_file_list[index], dtype=np.float32).reshape(-1, 4)
         elif self.ext == '.npy':
-            points = np.load(self.sample_file_list[index])
+            data = np.load(self.sample_file_list[index])
+            points = data[:, :3]  # First 3 columns for XYZ
+            colors = data[:, 3:6]  # Next 3 columns for RGB
         else:
             raise NotImplementedError
 
         input_dict = {
             'points': points,
+            'colors': colors if self.ext == '.npy' else None,
             'frame_id': index,
         }
 
         data_dict = self.prepare_data(data_dict=input_dict)
         return data_dict
+
 
 
 def parse_config():
@@ -98,8 +102,11 @@ def main():
             pred_dicts, _ = model.forward(data_dict)
 
             V.draw_scenes(
-                points=data_dict['points'][:, 1:], ref_boxes=pred_dicts[0]['pred_boxes'],
-                ref_scores=pred_dicts[0]['pred_scores'], ref_labels=pred_dicts[0]['pred_labels']
+                    points=data_dict['points'][:, 1:].cpu().numpy(),
+                    point_colors=data_dict['colors'].cpu().numpy() if 'colors' in data_dict else None,
+                    ref_boxes=pred_dicts[0]['pred_boxes'],
+                    ref_scores=pred_dicts[0]['pred_scores'],
+                    ref_labels=pred_dicts[0]['pred_labels']
             )
 
             if not OPEN3D_FLAG:
