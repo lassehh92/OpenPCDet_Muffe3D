@@ -3,12 +3,12 @@ DATA_PATH: '../data/custom'
 
 POINT_CLOUD_RANGE: [-4, -4, -2, 4, 4, 2]
 
-CLASS_NAMES: ['Anboring', 'EnkelSamling', 'Stophane', 'Bøjning']  
+CLASS_NAMES: ['Valve', 'Tap_connection', 'Joint', 'Elbow']  
 
 MAP_CLASS_TO_KITTI: {
-    'Anboring': 'Car',
-    'EnkelSamling': 'Pedestrian',
-    'Stophane': 'Cyclist',
+    'Valve': 'Car',
+    'Tap_connection': 'Pedestrian',
+    'Joint': 'Cyclist',
 }
 
 DATA_SPLIT: {

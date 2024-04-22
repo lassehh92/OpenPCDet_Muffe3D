@@ -2,8 +2,8 @@
 **build**
 **egg-info**
 **dist**
-data/costum/points
-data/custom
+data/custom/points
+data/custom/labels
 *.pyc
 venv/
 *.idea/
