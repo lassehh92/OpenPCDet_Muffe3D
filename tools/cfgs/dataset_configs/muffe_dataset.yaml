@@ -1,0 +1,73 @@
+DATASET: 'CustomDataset'
+DATA_PATH: '../data/muffe'
+
+POINT_CLOUD_RANGE: [-8, -8, -2, 8, 8, 2]
+
+CLASS_NAMES: ['Anboring', 'EnkelSamling', 'Stophane', 'Bøjning']  
+
+MAP_CLASS_TO_KITTI: {
+    'Anboring': 'Car',
+    'EnkelSamling': 'Pedestrian',
+    'Stophane': 'Cyclist',
+}
+
+DATA_SPLIT: {
+    'train': train,
+    'test': val
+}
+
+INFO_PATH: {
+    'train': [muffe_infos_train.pkl],
+    'test': [muffe_infos_val.pkl],
+}
+
+POINT_FEATURE_ENCODING: {
+    encoding_type: absolute_coordinates_encoding,
+    used_feature_list: ['x', 'y', 'z'],
+    src_feature_list: ['x', 'y', 'z'],
+}
+
+DATA_AUGMENTOR:
+    DISABLE_AUG_LIST: ['placeholder']
+    AUG_CONFIG_LIST:
+        - NAME: gt_sampling
+          USE_ROAD_PLANE: False
+          DB_INFO_PATH:
+              - muffe_dbinfos_train.pkl
+          PREPARE: {
+             filter_by_min_points: ['Anboring:5', 'EnkelSamling:5', 'Stophane:5'],
+             #filter_by_difficulty: [-1],
+          }
+
+          SAMPLE_GROUPS: ['Anboring:2', 'EnkelSamling:2', 'Stophane:2']
+          NUM_POINT_FEATURES: 3
+          DATABASE_WITH_FAKELIDAR: False
+          REMOVE_EXTRA_WIDTH: [0.0, 0.0, 0.0]
+          LIMIT_WHOLE_SCENE: True
+
+        - NAME: random_world_flip
+          ALONG_AXIS_LIST: ['x', 'y']
+
+        - NAME: random_world_rotation
+          WORLD_ROT_ANGLE: [-0.78539816, 0.78539816]
+
+        - NAME: random_world_scaling
+          WORLD_SCALE_RANGE: [0.95, 1.05]
+
+DATA_PROCESSOR:
+    - NAME: mask_points_and_boxes_outside_range
+      REMOVE_OUTSIDE_BOXES: True
+
+    - NAME: shuffle_points
+      SHUFFLE_ENABLED: {
+        'train': True,
+        'test': False
+      }
+
+    - NAME: transform_points_to_voxels
+      VOXEL_SIZE: [0.04, 0.04, 0.04]
+      MAX_POINTS_PER_VOXEL: 5
+      MAX_NUMBER_OF_VOXELS: {
+        'train': 24000,
+        'test': 40000
+      }
