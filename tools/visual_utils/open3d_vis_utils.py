@@ -35,7 +35,7 @@ def get_coor_colors(obj_labels):
     return label_rgba
 
 
-def draw_scenes(points, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scores=None, point_colors=None, draw_origin=True):
+def draw_scenes(points, point_colors=None, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scores=None, draw_origin=None):
     if isinstance(points, torch.Tensor):
         points = points.cpu().numpy()
     if isinstance(gt_boxes, torch.Tensor):
@@ -46,28 +46,24 @@ def draw_scenes(points, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scor
     vis = open3d.visualization.Visualizer()
     vis.create_window()
 
-    vis.get_render_option().point_size = 1.0
+    vis.get_render_option().point_size = 3.0
     vis.get_render_option().background_color = np.zeros(3)
 
     # draw origin
     if draw_origin:
-        axis_pcd = open3d.geometry.TriangleMesh.create_coordinate_frame(size=1.0, origin=[0, 0, 0])
+        axis_pcd = open3d.geometry.TriangleMesh.create_coordinate_frame(size=0.2, origin=[0, 0, 0])
         vis.add_geometry(axis_pcd)
 
     pts = open3d.geometry.PointCloud()
     pts.points = open3d.utility.Vector3dVector(points[:, :3])
 
     if point_colors is not None:
-        pts.colors = open3d.utility.Vector3dVector(point_colors / 255.0)  # Assuming RGB values are in [0, 255]
+       pts.colors = open3d.utility.Vector3dVector(point_colors / 255.0)  # RGB values are in [0, 255]
     else:
-        pts.colors = open3d.utility.Vector3dVector(np.ones((points.shape[0], 3)))
+       pts.colors = open3d.utility.Vector3dVector(np.ones((points.shape[0], 3)))
 
 
     vis.add_geometry(pts)
-    if point_colors is None:
-        pts.colors = open3d.utility.Vector3dVector(np.ones((points.shape[0], 3)))
-    else:
-        pts.colors = open3d.utility.Vector3dVector(point_colors)
 
     if gt_boxes is not None:
         vis = draw_box(vis, gt_boxes, (0, 0, 1))

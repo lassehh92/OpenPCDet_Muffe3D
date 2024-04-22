@@ -21,7 +21,7 @@ from pcdet.utils import common_utils
 
 
 class DemoDataset(DatasetTemplate):
-    def __init__(self, dataset_cfg, class_names, training=True, root_path=None, logger=None, ext='.npy'):
+    def __init__(self, dataset_cfg, class_names, training=True, root_path=None, logger=None, ext='.bin'):
         """
         Args:
             root_path:
@@ -46,18 +46,22 @@ class DemoDataset(DatasetTemplate):
     def __getitem__(self, index):
         if self.ext == '.bin':
             points = np.fromfile(self.sample_file_list[index], dtype=np.float32).reshape(-1, 4)
-        if self.ext == '.npy':
-            points = np.load(self.sample_file_list[index])
+        elif self.ext == '.npy':
+            data = np.load(self.sample_file_list[index])
+            points = data[:, :3]  # First 3 columns for XYZ
+            colors = data[:, 3:6]  # Next 3 columns for RGB
         else:
             raise NotImplementedError
 
         input_dict = {
             'points': points,
+            'colors': colors if self.ext == '.npy' else None,
             'frame_id': index,
         }
 
         data_dict = self.prepare_data(data_dict=input_dict)
         return data_dict
+
 
 
 def parse_config():
@@ -96,15 +100,13 @@ def main():
             data_dict = demo_dataset.collate_batch([data_dict])
             load_data_to_gpu(data_dict)
             pred_dicts, _ = model.forward(data_dict)
-            print(pred_dicts)
-            #points_with_colors=data_dict['points']
-            #print(data_dict['points'][:, 1:4].cpu().numpy())
-            #print(data_dict['points'][:, 4:7].cpu().numpy())
-          
 
             V.draw_scenes(
-                points=data_dict['points'][:, 1:4], point_colors=data_dict['points'][:, 4:7].cpu().numpy(), ref_boxes=pred_dicts[0]['pred_boxes'],
-                ref_scores=pred_dicts[0]['pred_scores'], ref_labels=pred_dicts[0]['pred_labels']
+                    points=data_dict['points'][:, 1:].cpu().numpy(),
+                    point_colors=data_dict['colors'].cpu().numpy() if 'colors' in data_dict else None,
+                    ref_boxes=pred_dicts[0]['pred_boxes'],
+                    ref_scores=pred_dicts[0]['pred_scores'],
+                    ref_labels=pred_dicts[0]['pred_labels']
             )
 
             if not OPEN3D_FLAG:

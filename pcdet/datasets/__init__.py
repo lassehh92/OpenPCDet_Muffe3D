@@ -24,7 +24,6 @@ __all__ = {
     'LyftDataset': LyftDataset,
     'ONCEDataset': ONCEDataset,
     'CustomDataset': CustomDataset
-    #'Argo2Dataset': Argo2Dataset
 }
 
 

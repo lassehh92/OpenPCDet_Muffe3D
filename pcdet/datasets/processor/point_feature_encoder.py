@@ -5,7 +5,7 @@ class PointFeatureEncoder(object):
     def __init__(self, config, point_cloud_range=None):
         super().__init__()
         self.point_encoding_config = config
-        assert list(self.point_encoding_config.src_feature_list[0:3]) == ['x', 'y', 'z']
+        assert list(self.point_encoding_config.src_feature_list[0:6]) == ['x', 'y', 'z', 'red', 'green', 'blue']
         self.used_feature_list = self.point_encoding_config.used_feature_list
         self.src_feature_list = self.point_encoding_config.src_feature_list
         self.point_cloud_range = point_cloud_range
@@ -46,9 +46,9 @@ class PointFeatureEncoder(object):
             return num_output_features
 
         assert points.shape[-1] == len(self.src_feature_list)
-        point_feature_list = [points[:, 0:3]]
+        point_feature_list = [points[:, 0:6]]
         for x in self.used_feature_list:
-            if x in ['x', 'y', 'z']:
+            if x in ['x', 'y', 'z', 'red', 'green', 'blue']:
                 continue
             idx = self.src_feature_list.index(x)
             point_feature_list.append(points[:, idx:idx+1])
