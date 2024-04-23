@@ -1,4 +1,4 @@
-CLASS_NAMES: ['Anboring', 'EnkelSamling', 'Stophane']
+CLASS_NAMES: ['Valve', 'Tap_connection', 'Joint']
 
 DATA_CONFIG:
     _BASE_CONFIG_: cfgs/dataset_configs/custom_dataset.yaml
@@ -22,7 +22,7 @@ MODEL:
         INPUT_FEATURES: 256
 
         CLASS_NAMES_EACH_HEAD: [
-            ['Anboring', 'EnkelSamling', 'Stophane']
+            ['Valve', 'Tap_connection', 'Joint']
         ]
 
         SHARED_CONV_CHANNEL: 256
