@@ -1,6 +1,7 @@
 import argparse
 import glob
 from pathlib import Path
+import os
 
 try:
     import open3d
@@ -75,20 +76,46 @@ def main():
     args, cfg = parse_config()
     logger = common_utils.create_logger()
     logger.info('-----------------Quick Demo of OpenPCDet-------------------------')
-    demo_dataset = DemoDataset(dataset_cfg=cfg.DATA_CONFIG, class_names=cfg.CLASS_NAMES, training=False, root_path=Path(args.data_path), ext=args.ext, logger=logger)
+    demo_dataset = DemoDataset(
+        dataset_cfg=cfg.DATA_CONFIG, class_names=cfg.CLASS_NAMES, training=False,
+        root_path=Path(args.data_path), ext=args.ext, logger=logger
+    )
     logger.info(f'Total number of samples: \t{len(demo_dataset)}')
 
     model = build_network(model_cfg=cfg.MODEL, num_class=len(cfg.CLASS_NAMES), dataset=demo_dataset)
     model.load_params_from_file(filename=args.ckpt, logger=logger, to_cpu=True)
     model.cuda()
     model.eval()
+
+    output_dir = "output_images"  # Default output directory
+    if args.output_image:
+        output_dir = os.path.dirname(args.output_image)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
     with torch.no_grad():
         for idx, data_dict in enumerate(demo_dataset):
-            logger.info(f'Visualized sample index: \t{idx + 1}')
+            original_filename = Path(demo_dataset.sample_file_list[idx]).stem  # Extract filename without extension
+            output_image_path = os.path.join(output_dir, f"{original_filename}_visual.png") if args.output_image else ''
+
             data_dict = demo_dataset.collate_batch([data_dict])
             load_data_to_gpu(data_dict)
             pred_dicts, _ = model.forward(data_dict)
-            V.draw_scenes(points=data_dict['points'][:, 1:4], point_colors=data_dict['points'][:, 4:7].cpu().numpy(), ref_boxes=pred_dicts[0]['pred_boxes'], ref_scores=pred_dicts[0]['pred_scores'], ref_labels=pred_dicts[0]['pred_labels'], output_image=args.output_image if idx == 0 else '')
+
+            points = data_dict['points'][:, 1:4]
+            point_colors = data_dict['points'][:, 4:7].cpu().numpy()
+            ref_boxes = pred_dicts[0]['pred_boxes']
+            ref_scores = pred_dicts[0]['pred_scores']
+            ref_labels = pred_dicts[0]['pred_labels']
+
+            V.draw_scenes(
+                points=points,
+                point_colors=point_colors,
+                ref_boxes=ref_boxes,
+                ref_scores=ref_scores,
+                ref_labels=ref_labels,
+                output_image=output_image_path
+            )
 
             if not OPEN3D_FLAG:
                 mlab.show(stop=True)
