@@ -67,6 +67,7 @@ def parse_config():
     parser.add_argument('--ckpt', type=str, default=None, help='specify the pretrained model')
     parser.add_argument('--ext', type=str, default='.npy', help='specify the extension of your point cloud data file')
     parser.add_argument('--output_image', type=str, default='', help='specify the output image file path (optional)')
+    parser.add_argument('--auto_close', type=bool, default=False, help='automatically close the visualization window')
     args = parser.parse_args()
 
     cfg_from_yaml_file(args.cfg_file, cfg)
@@ -115,6 +116,8 @@ def main():
                 ref_scores=ref_scores,
                 ref_labels=ref_labels,
                 output_image=output_image_path
+                auto_close=args.auto_close
+
             )
 
             if not OPEN3D_FLAG:
