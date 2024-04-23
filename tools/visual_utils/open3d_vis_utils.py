@@ -35,7 +35,7 @@ def get_coor_colors(obj_labels):
     return label_rgba
 
 
-def draw_scenes(points, point_colors=None, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scores=None, draw_origin=None):
+def draw_scenes(points, point_colors=None, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scores=None, draw_origin=None, output_image=''):
     if isinstance(points, torch.Tensor):
         points = points.cpu().numpy()
     if isinstance(gt_boxes, torch.Tensor):
@@ -72,6 +72,8 @@ def draw_scenes(points, point_colors=None, gt_boxes=None, ref_boxes=None, ref_la
         vis = draw_box(vis, ref_boxes, (0, 1, 0), ref_labels, ref_scores)
 
     vis.run()
+    if output_image:
+        vis.capture_screen_image(output_image, do_render=True)
     vis.destroy_window()
 
 

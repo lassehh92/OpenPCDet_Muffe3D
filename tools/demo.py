@@ -19,7 +19,6 @@ from pcdet.datasets import DatasetTemplate
 from pcdet.models import build_network, load_data_to_gpu
 from pcdet.utils import common_utils
 
-
 class DemoDataset(DatasetTemplate):
     def __init__(self, dataset_cfg, class_names, training=True, root_path=None, logger=None, ext='.npy'):
         """
@@ -62,28 +61,21 @@ class DemoDataset(DatasetTemplate):
 
 def parse_config():
     parser = argparse.ArgumentParser(description='arg parser')
-    parser.add_argument('--cfg_file', type=str, default='cfgs/kitti_models/second.yaml',
-                        help='specify the config for demo')
-    parser.add_argument('--data_path', type=str, default='demo_data',
-                        help='specify the point cloud data file or directory')
+    parser.add_argument('--cfg_file', type=str, default='cfgs/kitti_models/second.yaml', help='specify the config for demo')
+    parser.add_argument('--data_path', type=str, default='demo_data', help='specify the point cloud data file or directory')
     parser.add_argument('--ckpt', type=str, default=None, help='specify the pretrained model')
     parser.add_argument('--ext', type=str, default='.npy', help='specify the extension of your point cloud data file')
-
+    parser.add_argument('--output_image', type=str, default='', help='specify the output image file path (optional)')
     args = parser.parse_args()
 
     cfg_from_yaml_file(args.cfg_file, cfg)
-
     return args, cfg
-
 
 def main():
     args, cfg = parse_config()
     logger = common_utils.create_logger()
     logger.info('-----------------Quick Demo of OpenPCDet-------------------------')
-    demo_dataset = DemoDataset(
-        dataset_cfg=cfg.DATA_CONFIG, class_names=cfg.CLASS_NAMES, training=False,
-        root_path=Path(args.data_path), ext=args.ext, logger=logger
-    )
+    demo_dataset = DemoDataset(dataset_cfg=cfg.DATA_CONFIG, class_names=cfg.CLASS_NAMES, training=False, root_path=Path(args.data_path), ext=args.ext, logger=logger)
     logger.info(f'Total number of samples: \t{len(demo_dataset)}')
 
     model = build_network(model_cfg=cfg.MODEL, num_class=len(cfg.CLASS_NAMES), dataset=demo_dataset)
@@ -96,22 +88,12 @@ def main():
             data_dict = demo_dataset.collate_batch([data_dict])
             load_data_to_gpu(data_dict)
             pred_dicts, _ = model.forward(data_dict)
-            print(pred_dicts)
-            #points_with_colors=data_dict['points']
-            #print(data_dict['points'][:, 1:4].cpu().numpy())
-            #print(data_dict['points'][:, 4:7].cpu().numpy())
-          
-
-            V.draw_scenes(
-                points=data_dict['points'][:, 1:4], point_colors=data_dict['points'][:, 4:7].cpu().numpy(), ref_boxes=pred_dicts[0]['pred_boxes'],
-                ref_scores=pred_dicts[0]['pred_scores'], ref_labels=pred_dicts[0]['pred_labels']
-            )
+            V.draw_scenes(points=data_dict['points'][:, 1:4], point_colors=data_dict['points'][:, 4:7].cpu().numpy(), ref_boxes=pred_dicts[0]['pred_boxes'], ref_scores=pred_dicts[0]['pred_scores'], ref_labels=pred_dicts[0]['pred_labels'], output_image=args.output_image if idx == 0 else '')
 
             if not OPEN3D_FLAG:
                 mlab.show(stop=True)
 
     logger.info('Demo done.')
-
 
 if __name__ == '__main__':
     main()
