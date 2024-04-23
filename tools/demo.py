@@ -117,7 +117,6 @@ def main():
                 ref_labels=ref_labels,
                 output_image=output_image_path,
                 auto_close=args.auto_close
-
             )
 
             if not OPEN3D_FLAG:
