@@ -110,10 +110,16 @@ def main():
             ref_labels = pred_dicts[0]['pred_labels']
 
             # Printing the values of boxes, scores, and labels
+            # print(f"Sample {idx}:")
+            # print("Boxes:\n", ref_boxes)
+            # print("Scores:\n", ref_scores)
+            # print("Labels:\n", ref_labels)
+
             print(f"Sample {idx}:")
-            print("Boxes:\n", ref_boxes)
-            print("Scores:\n", ref_scores)
-            print("Labels:\n", ref_labels)
+            print("Scores and Labels:")
+            for score, label in zip(ref_scores, ref_labels):
+                label_name = cfg.CLASS_NAMES[label-1]  # Using the class names from the configuration
+                print(f"  - {label_name}: {score:.2%}")  # Formats score as a percentage
 
             V.draw_scenes(
                 points=points,
