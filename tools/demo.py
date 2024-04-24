@@ -109,6 +109,12 @@ def main():
             ref_scores = pred_dicts[0]['pred_scores']
             ref_labels = pred_dicts[0]['pred_labels']
 
+            # Printing the values of boxes, scores, and labels
+            print(f"Sample {idx}:")
+            print("Boxes:\n", ref_boxes)
+            print("Scores:\n", ref_scores)
+            print("Labels:\n", ref_labels)
+
             V.draw_scenes(
                 points=points,
                 point_colors=point_colors,
