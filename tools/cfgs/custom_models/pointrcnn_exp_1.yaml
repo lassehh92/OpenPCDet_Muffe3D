@@ -9,8 +9,8 @@ DATA_CONFIG:
 
         -   NAME: sample_points
             NUM_POINTS: {
-                'train': 24000,
-                'test': 40000
+                'train': 30000,
+                'test': 60000
             }
 
         -   NAME: shuffle_points
@@ -78,7 +78,7 @@ MODEL:
 
         SA_CONFIG:
             NPOINTS: [128, 32, -1]
-            RADIUS: [0.2, 0.4, 100]
+            RADIUS: [0.1, 0.2, 30]
             NSAMPLE: [16, 16, 16]
             MLPS: [[128, 128, 128],
                    [128, 128, 256],
@@ -144,7 +144,7 @@ OPTIMIZATION:
     NUM_EPOCHS: 80
 
     OPTIMIZER: adam_onecycle
-    LR: 0.01
+    LR: 0.005 
     WEIGHT_DECAY: 0.01
     MOMENTUM: 0.9
 
