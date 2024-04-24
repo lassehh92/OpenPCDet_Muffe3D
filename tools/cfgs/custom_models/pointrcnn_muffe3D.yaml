@@ -25,8 +25,8 @@ MODEL:
     BACKBONE_3D:
         NAME: PointNet2MSG
         SA_CONFIG:
-            NPOINTS: [1024, 512, 128, 64]  # Reduced complexity
-            RADIUS: [[0.1, 0.2], [0.2, 0.4], [0.4, 0.8], [0.8, 1.6]]
+            NPOINTS: [2048, 512, 128, 32]  # Reduced for more focus on smaller sets of points
+            RADIUS: [[0.05, 0.25], [0.25, 0.5], [0.5, 1.0], [1.0, 2.0]]  # Adjusted for higher density
             NSAMPLE: [[16, 32], [16, 32], [16, 32], [16, 32]]
             MLPS: [[[16, 16, 32], [32, 32, 64]],
                    [[64, 64, 128], [128, 128, 256]],
