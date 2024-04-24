@@ -9,10 +9,11 @@ import matplotlib
 import numpy as np
 
 box_colormap = [
-    [1, 1, 1],
-    [0, 1, 0],
-    [0, 1, 1],
-    [1, 1, 0],
+    [1, 1, 1],    # White
+    [0, 1, 0],    # Green
+    [0, 1, 1],    # Cyan
+    [1, 1, 0],    # Yellow
+    [1, 0, 0]     # Red
 ]
 
 
