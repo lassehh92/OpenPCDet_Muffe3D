@@ -293,7 +293,7 @@ if __name__ == '__main__':
         ROOT_DIR = (Path(__file__).resolve().parent / '../../../').resolve()
         create_custom_infos(
             dataset_cfg=dataset_cfg,
-            class_names=['Valve', 'Tap_connection', 'Joint', 'Elbow'],
+            class_names=['Valve', 'Tap_connection', 'Joint'],
             data_path=ROOT_DIR / 'data' / 'custom',
             save_path=ROOT_DIR / 'data' / 'custom',
         )
