@@ -9,7 +9,7 @@ MAX_EPOCH=50
 # Set a single batch size
 BATCH_SIZE=4
 # Define the base directory for checkpoints
-BASE_CKPT_DIR="/path/to/your/checkpoints"
+BASE_CKPT_DIR="/home/lasse/Git/OpenPCDet_Muffe3D/output/custom_models/pointrcnn_base"
 
 # Start from the initial epoch and increase by the increment until reaching or exceeding the max epoch
 for ((EPOCH=$INITIAL_EPOCH; EPOCH<=$MAX_EPOCH; EPOCH+=$EPOCH_INCREMENT))
