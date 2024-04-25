@@ -8,8 +8,7 @@ CLASS_NAMES: ['Valve', 'Tap_connection', 'Joint']
 MAP_CLASS_TO_KITTI: {
     'Valve': 'Car',
     'Tap_connection': 'Pedestrian',
-    'Joint': 'Cyclist',
-    'Elbow': 'Van'
+    'Joint': 'Cyclist'
 }
 
 DATA_SPLIT: {
