@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Initial epoch value
-INITIAL_EPOCH=10
+INITIAL_EPOCH=50
 # Increment value for each loop
-EPOCH_INCREMENT=10
+EPOCH_INCREMENT=50
 # Maximum number of loops or maximum epoch to be reached (optional, adjust as needed)
-MAX_EPOCH=50
+MAX_EPOCH=1000
 # Set a single batch size
-BATCH_SIZE=4
+BATCH_SIZE=2
 # Define the base directory for checkpoints
 BASE_CKPT_DIR="/home/lasse/Git/OpenPCDet_Muffe3D/output/custom_models/pointrcnn_base"
 
