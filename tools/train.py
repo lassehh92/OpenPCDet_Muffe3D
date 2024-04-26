@@ -101,7 +101,6 @@ def main():
     # Update Learning Rate
     if args.lr is not None:
         cfg.OPTIMIZATION.LR = args.lr
-    optimizer = build_optimizer(model, cfg.OPTIMIZATION)
 
     # Update Backbone 3D SA_CONFIG
     if args.radius:
