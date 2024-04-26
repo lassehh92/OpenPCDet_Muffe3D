@@ -52,6 +52,15 @@ def parse_config():
     
     #my addtions
     parser.add_argument('--lr', type=float, default=None, help='learning rate for training')
+    parser.add_argument('--radius', nargs='+', type=float, action='append', help='list of list of radii for backbone 3D SA_CONFIG')
+    parser.add_argument('--nsample', nargs='+', type=int, action='append', help='list of list of nsample for backbone 3D SA_CONFIG')
+    parser.add_argument('--pool_extra_width', nargs='+', type=float, help='list of pool extra width for ROI_HEAD')
+    parser.add_argument('--num_sampled_points', type=int, help='number of sampled points for ROI_HEAD')
+    parser.add_argument('--nms_thresh', type=float, help='NMS threshold for NMS_CONFIG')
+    parser.add_argument('--cls_fg_thresh', type=float, help='foreground threshold for ROI_HEAD TARGET_CONFIG')
+    parser.add_argument('--cls_bg_thresh', type=float, help='background threshold for ROI_HEAD TARGET_CONFIG')
+    parser.add_argument('--cls_bg_thresh_lo', type=float, help='low background threshold for ROI_HEAD TARGET_CONFIG')
+
 
     args = parser.parse_args()
 
@@ -89,9 +98,34 @@ def main():
     if args.fix_random_seed:
         common_utils.set_random_seed(666 + cfg.LOCAL_RANK)
 
+    # Update Learning Rate
     if args.lr is not None:
         cfg.OPTIMIZATION.LR = args.lr
     optimizer = build_optimizer(model, cfg.OPTIMIZATION)
+
+    # Update Backbone 3D SA_CONFIG
+    if args.radius:
+        cfg.MODEL.BACKBONE_3D.SA_CONFIG.RADIUS = args.radius
+    if args.nsample:
+        cfg.MODEL.BACKBONE_3D.SA_CONFIG.NSAMPLE = args.nsample
+
+    # Update ROI_HEAD
+    if args.pool_extra_width:
+        cfg.MODEL.ROI_HEAD.POOL_EXTRA_WIDTH = args.pool_extra_width
+    if args.num_sampled_points:
+        cfg.MODEL.ROI_HEAD.NUM_SAMPLED_POINTS = args.num_sampled_points
+
+    # Update NMS_CONFIG
+    if args.nms_thresh:
+        cfg.MODEL.NMS_CONFIG.NMS_THRESH = args.nms_thresh
+
+    # Update ROI_HEAD TARGET_CONFIG
+    if args.cls_fg_thresh:
+        cfg.MODEL.ROI_HEAD.TARGET_CONFIG.CLS_FG_THRESH = args.cls_fg_thresh
+    if args.cls_bg_thresh:
+        cfg.MODEL.ROI_HEAD.TARGET_CONFIG.CLS_BG_THRESH = args.cls_bg_thresh
+    if args.cls_bg_thresh_lo:
+        cfg.MODEL.ROI_HEAD.TARGET_CONFIG.CLS_BG_THRESH_LO = args.cls_bg_thresh_lo
 
 
     output_dir = cfg.ROOT_DIR / 'output' / cfg.EXP_GROUP_PATH / cfg.TAG / args.extra_tag
