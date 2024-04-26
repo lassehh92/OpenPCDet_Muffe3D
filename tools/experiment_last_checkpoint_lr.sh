@@ -9,7 +9,7 @@ MAX_EPOCH=400
 # Set a single batch size
 BATCH_SIZE=1
 # Set a single batch size
-MODEL_NAME="pointrcnn_base_CLS"
+MODEL_NAME="pointrcnn_base_CLS_LR"
 # Define the base directory for checkpoints
 BASE_CKPT_DIR="/home/lasse/Git/OpenPCDet_Muffe3D/output/custom_models/${MODEL_NAME}"
 
@@ -29,7 +29,7 @@ do
     fi
 
     echo "Starting training ${MODEL_NAME} for ${EPOCH} epochs with batch size ${BATCH_SIZE} from checkpoint..."
-    python train.py --cfg_file cfgs/custom_models/${MODEL_NAME}.yaml --epochs $EPOCH --batch_size $BATCH_SIZE --lr 0.001 --extra_tag "exp_${EPOCH}_epochs_${BATCH_SIZE}_batch" $CKPT_FILE
+    python train.py --cfg_file cfgs/custom_models/${MODEL_NAME}.yaml --epochs $EPOCH --batch_size $BATCH_SIZE --extra_tag "exp_${EPOCH}_epochs_${BATCH_SIZE}_batch" $CKPT_FILE
     echo "Training for ${EPOCH} epochs with batch size ${BATCH_SIZE} completed."
 done
 
