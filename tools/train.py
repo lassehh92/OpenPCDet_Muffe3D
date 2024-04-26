@@ -50,6 +50,8 @@ def parse_config():
     parser.add_argument('--wo_gpu_stat', action='store_true', help='')
     parser.add_argument('--use_amp', action='store_true', help='use mix precision training')
     
+    #my addtions
+    parser.add_argument('--lr', type=float, default=None, help='learning rate for training')
 
     args = parser.parse_args()
 
@@ -86,6 +88,11 @@ def main():
 
     if args.fix_random_seed:
         common_utils.set_random_seed(666 + cfg.LOCAL_RANK)
+
+    if args.lr is not None:
+        cfg.OPTIMIZATION.LR = args.lr
+    optimizer = build_optimizer(model, cfg.OPTIMIZATION)
+
 
     output_dir = cfg.ROOT_DIR / 'output' / cfg.EXP_GROUP_PATH / cfg.TAG / args.extra_tag
     ckpt_dir = output_dir / 'ckpt'
