@@ -29,7 +29,7 @@ do
     fi
 
     echo "Starting training ${MODEL_NAME} for ${EPOCH} epochs with batch size ${BATCH_SIZE} from checkpoint..."
-    python train.py --cfg_file cfgs/custom_models/${MODEL_NAME}.yaml --epochs $EPOCH --batch_size $BATCH_SIZE --extra_tag "exp_${EPOCH}_epochs_${BATCH_SIZE}_batch" $CKPT_FILE
+    python train.py --cfg_file cfgs/custom_models/${MODEL_NAME}.yaml --epochs $EPOCH --batch_size $BATCH_SIZE --lr 0.001 --extra_tag "exp_${EPOCH}_epochs_${BATCH_SIZE}_batch" $CKPT_FILE
     echo "Training for ${EPOCH} epochs with batch size ${BATCH_SIZE} completed."
 done
 

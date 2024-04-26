@@ -3,7 +3,7 @@ import re
 import pandas as pd
 
 # Define the path to the directory containing the log files
-log_directory = '/Users/lhh/Downloads/logs_radii'
+log_directory = '/Users/lhh/Downloads/logs_NMS'
 
 # Prepare regex patterns to extract required data
 epoch_pattern = re.compile(r'EPOCH (\d+) EVALUATION')
@@ -51,6 +51,6 @@ df = df.sort_values(by='Epoch', ascending=True)  # Set ascending=False for desce
 
 
 # Save the DataFrame to a CSV file
-output_csv_path = '/Users/lhh/Downloads/logs_radii/output_metrics.csv'
+output_csv_path = os.path.join(log_directory, 'output_metrics.csv')
 df.to_csv(output_csv_path, index=False)
 print(f'Data successfully written to {output_csv_path}')
