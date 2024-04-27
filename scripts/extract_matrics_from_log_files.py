@@ -3,7 +3,7 @@ import re
 import pandas as pd
 
 # Define the path to the directory containing the log files
-log_directory = '/Users/lhh/Downloads/logs_NMS'
+log_directory = '/Users/lhh/Downloads/logs_base'
 
 # Prepare regex patterns to extract required data
 epoch_pattern = re.compile(r'EPOCH (\d+) EVALUATION')
