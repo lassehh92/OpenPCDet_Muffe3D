@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load the data from the CSV file
-df = pd.read_csv('/Users/lhh/Downloads/logs_CLS_LR/output_metrics.csv')
+df = pd.read_csv('/Users/lhh/Downloads/logs_base_NMS_7/output_metrics.csv')
 
 # Plot settings
 plt.figure(figsize=(10, 8))
