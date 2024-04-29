@@ -15,7 +15,7 @@ do
         for LR in "${LEARNING_RATES[@]}"
         do
             echo "Starting training for ${EPOCH} epochs with batch size ${BATCH_SIZE} and learning rate ${LR}..."
-            python train.py --cfg_file cfgs/custom_models/pointrcnn_radii_range.yaml --epochs $EPOCH --batch_size $BATCH_SIZE --lr $LR --extra_tag "exp_${EPOCH}_epochs_${BATCH_SIZE}_batch_lr_${LR}" > "logs/exp_${EPOCH}_${BATCH_SIZE}_lr_${LR}.log" 2>&1
+            python train.py --cfg_file cfgs/custom_models/pointrcnn_base_radii_range.yaml --epochs $EPOCH --batch_size $BATCH_SIZE --lr $LR --extra_tag "exp_${EPOCH}_epochs_${BATCH_SIZE}_batch_lr_${LR}" > "logs/exp_${EPOCH}_${BATCH_SIZE}_lr_${LR}.log" 2>&1
             echo "Training for ${EPOCH} epochs with batch size ${BATCH_SIZE} and learning rate ${LR} completed."
         done
     done
