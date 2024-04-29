@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Initial epoch value
-INITIAL_EPOCH=100
+INITIAL_EPOCH=5
 # Increment value for each loop
-EPOCH_INCREMENT=100
+EPOCH_INCREMENT=5
 # Maximum number of loops or maximum epoch to be reached (optional, adjust as needed)
-MAX_EPOCH=2000
+MAX_EPOCH=100
 # Set a single batch size
 BATCH_SIZE=1
 # Set a single batch size

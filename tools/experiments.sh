@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define a list of epoch values, batch sizes, and learning rates to test
-EPOCH_VALUES=(100)
+EPOCH_VALUES=(50)
 BATCH_SIZES=(1 2 4)
 LEARNING_RATES=(0.01 0.005 0.001)
 
